@@ -40,20 +40,7 @@ function checkNestedIndentation(document: vscode.TextDocument) {
     }
   }
 
-  if (maxIndentation > maxTabs) {
-    const exceedCount = maxIndentation - maxTabs;
-    const newFontSize = Math.max(
-      minimalFontSize,
-      originalFontSize - exceedCount
-    );
-    vscode.workspace
-      .getConfiguration()
-      .update(
-        "editor.fontSize",
-        newFontSize,
-        vscode.ConfigurationTarget.Global
-      );
-  } else {
+  if (maxIndentation <= maxTabs) {
     vscode.workspace
       .getConfiguration()
       .update(
@@ -61,7 +48,14 @@ function checkNestedIndentation(document: vscode.TextDocument) {
         originalFontSize,
         vscode.ConfigurationTarget.Global
       );
+    return;
   }
+
+  const exceedCount = maxIndentation - maxTabs;
+  const newFontSize = Math.max(minimalFontSize, originalFontSize - exceedCount);
+  vscode.workspace
+    .getConfiguration()
+    .update("editor.fontSize", newFontSize, vscode.ConfigurationTarget.Global);
 }
 
 function checkAllOpenDocuments() {
