@@ -9,9 +9,16 @@
   "categories": [
     "Other"
   ],
+  "keywords": [
+    "productivity",
+    "workflow",
+    "efficiency",
+    "nesting",
+    "tabs",
+    "indentation"
+  ],
   "activationEvents": [
     "onDidChangeTextDocument",
-    "onDidOpenTextDocument",
     "onDidCloseTextDocument",
     "onDidChangeActiveTextEditor"
   ],
