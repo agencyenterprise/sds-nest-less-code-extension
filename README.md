@@ -1,8 +1,8 @@
 # Nest Less Code
 
-Nest Less Code decreases your editor's font size when you exceed the tab limits in nested code.
+Nest Less Code decreases your editor's font size and applies opacity to your code when you exceed the tab limits in nested code.
 
-As you indent the code deeper, the font size gets smaller.
+As you indent the code deeper, the font size gets smaller and more transparent.
 
 ## Extension Settings
 
