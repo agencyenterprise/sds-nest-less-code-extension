@@ -59,15 +59,15 @@ function checkNestedIndentation(document: vscode.TextDocument) {
   const configSxMaxTabs = config.get<number>("configSxMaxTabs");
   const fileExtension = document.fileName.split(".").pop();
   const ranges: vscode.DecorationOptions[] = [];
-
+  let maxIndentation = 0;
+  let minOpacity = 1;
   let maxTabs = defaultConfMaxTabs || defaultMaxTabs;
+
   if (fileExtension === "jsx" || fileExtension === "tsx") {
     maxTabs = configSxMaxTabs || defaultMaxTabsSX;
   }
 
   const lines = document.getText().split("\n");
-  let maxIndentation = 0;
-  let minOpacity = 1;
   const spacesSize: number =
     vscode.workspace.getConfiguration("editor").get("tabSize") || 4;
 
