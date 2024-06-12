@@ -1,26 +1,116 @@
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
-import * as vscode from 'vscode';
+import * as vscode from "vscode";
 
-// This method is called when your extension is activated
-// Your extension is activated the very first time the command is executed
-export function activate(context: vscode.ExtensionContext) {
+let originalFontSize: number;
 
-	// Use the console to output diagnostic information (console.log) and errors (console.error)
-	// This line of code will only be executed once when your extension is activated
-	console.log('Congratulations, your extension "nestlesscode" is now active!');
+function checkNestedIndentation(document: vscode.TextDocument) {
+  const editor = vscode.window.visibleTextEditors.find(
+    (e) => e && e.document && e.document.uri === document.uri
+  );
+  if (!editor) {
+    return;
+  }
 
-	// The command has been defined in the package.json file
-	// Now provide the implementation of the command with registerCommand
-	// The commandId parameter must match the command field in package.json
-	const disposable = vscode.commands.registerCommand('nestlesscode.helloWorld', () => {
-		// The code you place here will be executed every time your command is executed
-		// Display a message box to the user
-		vscode.window.showInformationMessage('Hello World from NestLessCode!');
-	});
+  const defaultMaxTabs = 3;
+  const defaultMaxTabsSX = 6;
+  const minimalFontSize = 10;
+  const config = vscode.workspace.getConfiguration("nestlesscode");
+  const defaultConfMaxTabs = config.get<number>("defaultConfMaxTabs");
+  const configSxMaxTabs = config.get<number>("configSxMaxTabs");
+  const fileExtension = document.fileName.split(".").pop();
 
-	context.subscriptions.push(disposable);
+  let maxTabs = defaultConfMaxTabs || defaultMaxTabs;
+  if (fileExtension === "jsx" || fileExtension === "tsx") {
+    maxTabs = configSxMaxTabs || defaultMaxTabsSX;
+  }
+
+  const lines = document.getText().split("\n");
+  let maxIndentation = 0;
+  const spacesSize: number =
+    vscode.workspace.getConfiguration("editor").get("tabSize") || 4;
+
+  for (let line of lines) {
+    const tabMatch = line.match(/^\t*/) || [];
+    const spaceMatch = line.match(/^ */) || [];
+    const tabCount = (tabMatch[0] || "").length;
+    const spaceCount = (spaceMatch[0] || "").length / spacesSize;
+    const indentationCount = Math.max(tabCount, spaceCount);
+
+    if (indentationCount > maxIndentation) {
+      maxIndentation = indentationCount;
+    }
+  }
+
+  if (maxIndentation > maxTabs) {
+    const exceedCount = maxIndentation - maxTabs;
+    const newFontSize = Math.max(
+      minimalFontSize,
+      originalFontSize - exceedCount
+    );
+    vscode.workspace
+      .getConfiguration()
+      .update(
+        "editor.fontSize",
+        newFontSize,
+        vscode.ConfigurationTarget.Global
+      );
+  } else {
+    vscode.workspace
+      .getConfiguration()
+      .update(
+        "editor.fontSize",
+        originalFontSize,
+        vscode.ConfigurationTarget.Global
+      );
+  }
 }
 
-// This method is called when your extension is deactivated
-export function deactivate() {}
+function checkAllOpenDocuments() {
+  if (vscode.window.visibleTextEditors.length === 0) {
+    vscode.workspace
+      .getConfiguration()
+      .update(
+        "editor.fontSize",
+        originalFontSize,
+        vscode.ConfigurationTarget.Global
+      );
+  }
+}
+
+export function activate(context: vscode.ExtensionContext) {
+  originalFontSize =
+    vscode.workspace.getConfiguration("editor").get<number>("fontSize") || 14;
+
+  const disposable = vscode.workspace.onDidChangeTextDocument((event) => {
+    checkNestedIndentation(event.document);
+  });
+
+  const disposableActiveEditor = vscode.window.onDidChangeActiveTextEditor(
+    (editor) => {
+      if (editor) {
+        checkNestedIndentation(editor.document);
+      }
+    }
+  );
+
+  const disposableClose = vscode.workspace.onDidCloseTextDocument(() => {
+    checkAllOpenDocuments();
+  });
+
+  context.subscriptions.push(
+    disposable,
+    disposableClose,
+    disposableActiveEditor
+  );
+}
+
+export function deactivate() {
+  if (originalFontSize !== undefined) {
+    vscode.workspace
+      .getConfiguration()
+      .update(
+        "editor.fontSize",
+        originalFontSize,
+        vscode.ConfigurationTarget.Global
+      );
+  }
+}
