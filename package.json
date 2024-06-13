@@ -1,7 +1,11 @@
 {
   "name": "nestlesscode",
   "displayName": "NestLessCode",
-  "description": "",
+  "publisher": "AEStudio",
+  "author": {
+    "name": "patrickdmrezende"
+  },
+  "description": "As you indent the code deeper, the font size gets smaller and more transparent. Made as a Same Day Skunkworks project by Agency Enterprise.",
   "version": "0.0.1",
   "engines": {
     "vscode": "^1.90.0"
@@ -20,16 +24,11 @@
   "activationEvents": [
     "onDidChangeTextDocument",
     "onDidCloseTextDocument",
-    "onDidChangeActiveTextEditor"
+    "onDidChangeActiveTextEditor",
+    "onStartupFinished"
   ],
   "main": "./dist/extension.js",
   "contributes": {
-    "commands": [
-      {
-        "command": "nestlesscode.checkNestedTabs",
-        "title": "Check Nested Tabs"
-      }
-    ],
     "configuration": {
       "type": "object",
       "title": "Nest Less Code Configuration",
