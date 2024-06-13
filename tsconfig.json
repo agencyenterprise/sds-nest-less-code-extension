@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "ES6",
+    "outDir": "out",
+    "sourceMap": true,
+    "rootDir": "src",
+    "lib": ["ES6", "DOM"],
+    "strict": true,
+    "esModuleInterop": true,
+    "types": ["mocha", "node"]
+  },
+  "include": [
+    "src/**/*.ts",
+    "test/**/*.ts",
+    "src/test-files/**/*.js",
+    "src/test-files/**/*.jsx"
+  ]
+}
