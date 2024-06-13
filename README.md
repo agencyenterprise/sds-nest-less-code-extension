@@ -8,7 +8,11 @@ As you indent the code deeper, the font size gets smaller and more transparent.
 
 ### As you indent the code deeper, the font size gets smaller and more transparent.
 
+![democode](https://github.com/agencyenterprise/sds-nest-less-code-extension/assets/11878925/8c5487e0-f70f-49e6-88c6-cfd36b900b54)
+
 ### Don't worry! When you fix the indentation, the font size returns to normal size and opacity.
+
+![democodereverse](https://github.com/agencyenterprise/sds-nest-less-code-extension/assets/11878925/13367ec5-e6bb-4cfd-90ac-2b78609a0ded)
 
 ## Extension Settings
 
