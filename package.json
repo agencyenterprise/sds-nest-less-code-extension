@@ -1,12 +1,17 @@
 {
   "name": "nestlesscode",
-  "displayName": "NestLessCode",
+  "displayName": "Nest Less Code",
   "publisher": "AEStudio",
   "author": {
     "name": "patrickdmrezende"
   },
+  "icon": "icon.png",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/agencyenterprise/sds-nest-less-code-extension"
+  },
   "description": "As you indent the code deeper, the font size gets smaller and more transparent. Made as a Same Day Skunkworks project by Agency Enterprise.",
-  "version": "0.0.1",
+  "version": "0.0.4",
   "engines": {
     "vscode": "^1.90.0"
   },
@@ -19,7 +24,12 @@
     "efficiency",
     "nesting",
     "tabs",
-    "indentation"
+    "indentation",
+    "nestlesscode",
+    "nest less code",
+    "nest",
+    "less",
+    "code"
   ],
   "activationEvents": [
     "onDidChangeTextDocument",
